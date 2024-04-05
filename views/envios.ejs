@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Envíos</title>
+</head>
+<body>
+    <h1>Funciones de envíos</h1>
+    
+    <h2>GET</h2>
+    <% if (envios && envios.length) { %>
+        <ul>
+            <% envios.forEach(function(envio) { %>
+                <li>
+                    <p>Tipo de Envío: <%= envio.tipoDeEnvio %></p>
+                    <p>Detalle de Envío: <%= envio.detalleEnvio %></p>
+                    <p>Fecha de Envío: <%= envio.fechaEnvio %></p>
+                    <p>Estado del Envío: <%= envio.estadoDelEnvio %></p>
+                    <p>Dirección de Envío: <%= envio.dirreccionEnvio %></p>
+                    <p>Total de Envío: <%= envio.totalEnvio %></p>
+                    <p>Estado: <%= envio.estado %></p>
+                </li>
+            <% }); %>
+        </ul>
+    <% } else { %>
+        <p>No hay envíos disponibles.</p>
+    <% } %>    
+    
+    <h2>POST</h2>
+    <form action="/envios" method="POST">
+        <label for="tipoDeEnvio">Tipo de Envío:</label><br>
+        <input type="text" id="tipoDeEnvio" name="tipoDeEnvio" required><br>
+        <label for="detalleEnvio">Detalle de Envío:</label><br>
+        <input type="text" id="detalleEnvio" name="detalleEnvio" required><br>
+        <label for="fechaEnvio">Fecha de Envío:</label><br>
+        <input type="text" id="fechaEnvio" name="fechaEnvio" required><br>
+        <label for="estadoDelEnvio">Estado del Envío:</label><br>
+        <input type="text" id="estadoDelEnvio" name="estadoDelEnvio" required><br>
+        <label for="dirreccionEnvio">Dirección de Envío:</label><br>
+        <input type="text" id="dirreccionEnvio" name="dirreccionEnvio" required><br>
+        <label for="totalEnvio">Total de Envío:</label><br>
+        <input type="number" id="totalEnvio" name="totalEnvio" required><br>
+        <label for="estado">Estado:</label><br>
+        <input type="boolean" id="estado" name="estado" required><br><br>
+        <input type="submit" value="Submit">
+    </form>
+    
+</body>
+</html>
