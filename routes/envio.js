@@ -26,7 +26,9 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.get("/nuevoEnvio", res.render("envios"));
+router.get("/nuevoEnvio", async (req, res) => {
+  res.render("envios")
+});
 
 // Ruta para obtener el promedio de usuarios (GET '/promedio')
 router.get("/promedio", PromGet);
