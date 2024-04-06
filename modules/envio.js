@@ -1,35 +1,28 @@
-const {Schema, model} = require('mongoose'); // Importa las funciones Schema y model de mongoose para definir esquemas y modelos de datos
-// Define el esquema del modelo Usuario
+const {Schema, model} = require('mongoose');
+
 const EnvioSchema = Schema({
-    tipoDeEnvio : {
+    tipoDeEnvio: {
         type: String,
-        required: [true, 'El tipo de envio es obligatorio'] // Define que el campo nombre es obligatorio
     },
     detalleEnvio: {
-        type: String,   
-        required: [true, 'El detalle del envio es obligatorio'] // Define que el campo email es obligatorio
+        type: String,
     },
     fechaEnvio: {
-        type: String,
-        required: [true, 'La fecha de envio es obligatorio'], // Define que el campo password es obligatorio
+        type: String
     },
     estadoDelEnvio: {
         type: String,
-        required: true, // Define que el campo rol es obligatorio
     },
-    dirreccionEnvio: {
-        type: String,
-        required: true, // Define que el campo rol es obligatorio
+    direccionEnvio: { 
+        type: String
     },
-    totalEnvio  : {
-        type: Number,   
-        required: [true, 'El total del envio es obligatorio'] // Define que el campo email es obligatorio
+    totalEnvio: {
+        type: Number
     },
     estado: {
         type: Boolean,
-        default: true, // Define el valor por defecto del campo estado como true
-        required: [true, 'El estado es obligatorio'] // Define que el campo estado es obligatorio
+        default: true
     },
-})
+});
 // Crea y exporta el modelo Usuario a partir del esquema UsuarioSchema
 module.exports = model('Envio', EnvioSchema);

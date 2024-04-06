@@ -1,7 +1,8 @@
 const { response } = require("express"); // Importa la función `response` desde el módulo express
 const bcrypt = require("bcryptjs"); // Importa la librería bcryptjs para el cifrado de contraseñas
 // Importar modelos
-const Envio = require("../modules/envio"); // Importa el modelo de Usuario desde el módulo '../modules/usuario'
+const Envio = require('../modules/envio'); // Importa el modelo de Usuario desde el módulo '../modules/usuario'
+
 // Controlador para la solicitud GET a la ruta de usuarios
 
 
@@ -29,56 +30,79 @@ const PromGet = async (req, res = response) => {
             envios, // Devuelve los usuarios obtenidos de la base de datos
     });
 };
-// Controlador para la solicitud POST a la ruta de usuarios
-const enviosPost = async (req, res = response) => {
-    const body = req.body; // Extrae el cuerpo de la solicitud
-    let msg = ""; // Inicializa una variable para el mensaje de respuesta
-    const envio = new Envio(body); // Crea un nuevo objeto Usuario con los datos del cuerpo de la solicitud
-    const { tipoDeEnvio, detalleEnvio, fechaEnvio, estadoDelEnvio, dirreccionEnvio, totalEnvio, estado } = req.body; // Extrae los datos del cuerpo de la solicitud
+const enviosPost = async (req, res) => {
+    const { tipoDeEnvio, detalleEnvio, fechaEnvio, estadoDelEnvio, direccionEnvio, totalEnvio, estado } = req.body
+    let msg = "";
+
+
+    const nuevoEnvio = new Envio ({
+        tipoDeEnvio,
+        detalleEnvio,
+        fechaEnvio,
+        estadoDelEnvio,
+        direccionEnvio,
+        totalEnvio,
+        estado
+    });
+
     try {
-        await envio.save(); // Guarda el usuario en la base de datos
-        msg = "Envio Registrado"; // Asigna un mensaje de éxito
+        nuevoEnvio.save();
+        msg = "Envío registrado correctamente";
     } catch (error) {
-        console.log(error); // Muestra el error por consola
-        if (error) {
-            if (error.name === "ValidationError") {
-                console.error(Object.values(error.errors).map((val) => val.message)); // Muestra los mensajes de error de validación
-                msg = Object.values(error.errors).map((val) => val.message);
-                // Asigna los mensajes de error al mensaje de respuesta
-            }
-        }
+        console.error(error);
+        msg = "Error al registrar el envío";
     }
-    console.log(msg); // Muestra el mensaje de respuesta por consola
-    res.json({
-        msg: msg, // Devuelve el mensaje de respuesta como un objeto JSON
-    });
+
+    console.log(msg);
+    res.json({ msg });
 };
-// Controlador para la solicitud PUT a la ruta de usuarios
+
 const enviosPut = async (req, res = response) => {
-    const body = req.query; // Extrae los parámetros de la consulta
-    console.log(body); // Muestra los parámetros de la consulta por consola
-    const { tipoDeEnvio, detalleEnvio, fechaEnvio, estadoDelEnvio, dirreccionEnvio, totalEnvio, estado } = req.body; // Extrae los datos del cuerpo de la solicitud
-    // Busca y actualiza un usuario en la base de datos
-    const envio = await Envio.findOneAndUpdate(
-        { detalleEnvio: detalleEnvio }
-    );
-    res.json({
-        msg: "Envio Modificado", // Devuelve un mensaje indicando que se modificó el usuario
-        envio, // Devuelve el usuario modificado
-    });
+    const { tipoDeEnvio, detalleEnvio, fechaEnvio, estadoDelEnvio, dirreccionEnvio, totalEnvio, estado } = req.body;
+
+    try {
+        const envio = await Envio.findByIdAndUpdate(req.params._id, {
+            tipoDeEnvio,
+            detalleEnvio,
+            fechaEnvio,
+            estadoDelEnvio,
+            dirreccionEnvio,
+            totalEnvio,
+            estado
+        }, { new: true });
+
+        if (!envio) {
+            return res.status(404).json({ msg: "Envío no encontrado" });
+        }
+
+        res.json({
+            msg: "Envío Modificado",
+            envio
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ msg: "Error al modificar el envío" });
+    }
 };
-// Controlador para la solicitud DELETE a la ruta de usuarios
+
 const enviosDelete = async (req, res = response) => {
-    const body = req.query; // Extrae los parámetros de la consulta
-    console.log(body); // Muestra los parámetros de la consulta por consola
-    const { tipoDeEnvio, detalleEnvio, fechaEnvio, estadoDelEnvio, dirreccionEnvio, totalEnvio, estado } = req.query; // Extrae los datos del cuerpo de la solicitud
-    // Busca y elimina un usuario en la base de datos
-    const envio = await Envio.findOneAndDelete({ detalleEnvio: detalleEnvio });
-    res.json({
-        msg: "Envio Eliminado", // Devuelve un mensaje indicando que se eliminó el usuario
-        envio, // Devuelve el usuario eliminado
-    });
+    try {
+        const envio = await Envio.findByIdAndDelete(req.params._id);
+
+        if (!envio) {
+            return res.status(404).json({ msg: "Envío no encontrado" });
+        }
+
+        res.json({
+            msg: "Envío Eliminado",
+            envio
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ msg: "Error al eliminar el envío" });
+    }
 };
+
 // Exporta los controladores de las rutas de usuarios para que estén disponibles para otros módulos
 module.exports = {
     enviosGet,

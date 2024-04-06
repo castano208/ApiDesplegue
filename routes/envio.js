@@ -15,6 +15,7 @@ const {
 // Configura EJS como motor de plantillas
 router.set("view engine", "ejs");
 router.set("envios", path.join(__dirname, "views"));
+router.set("nuevoEnvio", path.join(__dirname, "views"));
 
 router.get("/", async (req, res) => {
   try {
@@ -27,7 +28,7 @@ router.get("/", async (req, res) => {
 });
 
 router.get("/nuevoEnvio", async (req, res) => {
-  res.render("envios")
+  res.render("nuevoEnvio")
 });
 
 // Ruta para obtener el promedio de usuarios (GET '/promedio')
@@ -35,8 +36,8 @@ router.get("/promedio", PromGet);
 // Ruta para crear un nuevo usuario (POST '/')
 router.post("/", enviosPost);
 // Ruta para actualizar un usuario existente (PUT '/')
-router.put("/", enviosPut);
+router.put("/:_id", enviosPut);
 // Ruta para eliminar un usuario existente (DELETE '/')
-router.delete('/', enviosDelete);
+router.delete('/:_id', enviosDelete);
 // Exporta el router para q
 module.exports = router;
