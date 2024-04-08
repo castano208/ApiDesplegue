@@ -61,7 +61,7 @@ const enviosPut = async (req, res = response) => {
     const { tipoDeEnvio, detalleEnvio, fechaEnvio, estadoDelEnvio, dirreccionEnvio, totalEnvio, estado } = req.body;
 
     try {
-        const envio = await Envio.findByIdAndUpdate(req.params._id, {
+        const envio = await Envio.findByIdAndUpdate(req.params.id, {
             tipoDeEnvio,
             detalleEnvio,
             fechaEnvio,
@@ -87,7 +87,7 @@ const enviosPut = async (req, res = response) => {
 
 const enviosDelete = async (req, res = response) => {
     try {
-        const envio = await Envio.findByIdAndDelete(req.params._id);
+        const envio = await Envio.findByIdAndDelete(req.params.id);
 
         if (!envio) {
             return res.status(404).json({ msg: "Envío no encontrado" });
@@ -102,6 +102,7 @@ const enviosDelete = async (req, res = response) => {
         res.status(500).json({ msg: "Error al eliminar el envío" });
     }
 };
+
 
 // Exporta los controladores de las rutas de usuarios para que estén disponibles para otros módulos
 module.exports = {
