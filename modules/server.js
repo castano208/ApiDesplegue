@@ -21,7 +21,13 @@ class Server {
     }
 
     middlewares() {
-        this.app.use(cors());
+        if (process.env.NODE_ENV === 'production') {
+            this.app.use(cors({
+                origin: 'https://apidesplegue-1.onrender.com'
+            }));
+        } else {
+            this.app.use(cors());
+        }
         this.app.use(bodyParser.json());
         this.app.use(bodyParser.urlencoded({ extended: true }));
         this.app.use(express.static(__dirname + "/public"));
