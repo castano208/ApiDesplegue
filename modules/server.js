@@ -8,7 +8,6 @@ class Server {
         this.app = express();
         this.port = process.env.PORT || 3000; // Utiliza el puerto 3000 si no se especifica uno en las variables de entorno
         this.enviosPath = "/api/envios";
-        this.authPath = "/api/auth";
         this.middlewares();
         this.routes();
         this.connectDb();
@@ -35,7 +34,6 @@ class Server {
 
     routes() {
         this.app.use(this.enviosPath, require("../routes/envio"));
-        // this.app.use(this.authPath, require("../routes/auth"));
     }
 
     async connectDb() {
