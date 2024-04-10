@@ -25,4 +25,5 @@ const EnvioSchema = Schema({
     },
 });
 // Crea y exporta el modelo Usuario a partir del esquema UsuarioSchema
-module.exports = model('Envio', EnvioSchema);
+const Envio = model("Envio", EnvioSchema);
+module.exports = Envio;

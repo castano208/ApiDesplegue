@@ -1,7 +1,7 @@
 const express = require('express');
-const { dbConnection } = require("../database/config");
-const cors = require("cors");
-const bodyParser = require("body-parser");
+const { dbConnection } = require('../database/config');
+const cors = require('cors');
+const bodyParser = require('body-parser');
 
 class Server {
     constructor() {
@@ -20,15 +20,9 @@ class Server {
     }
 
     middlewares() {
-        if (process.env.NODE_ENV === 'production') {
-            this.app.use(cors({
-                origin: 'https://apidesplegue-1.onrender.com'
-            }));
-        } else {
-            this.app.use(cors());
-        }
+        this.app.use(cors());
         this.app.use(bodyParser.json());
-        this.app.use(bodyParser.urlencoded({ extended: true }));
+        // Configura express.static para servir archivos estáticos
         this.app.use(express.static(__dirname + "/public"));
     }
 
@@ -39,10 +33,11 @@ class Server {
     async connectDb() {
         try {
             await dbConnection();
-            console.log("Conexión exitosa a la base de datos");
+            console.log('Conexión a la base de datos exitosa');
         } catch (error) {
-            console.error("Error al conectar a la base de datos:", error);
-            process.exit(1); // Sale de la aplicación con un código de error
+            console.error('Error al conectar con la base de datos:', error);
+            // Aquí podrías manejar el error de conexión de forma más adecuada, como cerrar el servidor
+            process.exit(1);
         }
     }
 }

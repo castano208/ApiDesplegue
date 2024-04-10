@@ -110,5 +110,5 @@ module.exports = {
     enviosPost,
     enviosPut,
     enviosDelete,
-    PromGet,
+    PromGet
 };
