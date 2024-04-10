@@ -32,11 +32,11 @@ router.get("/nuevoEnvio", async (req, res) => {
 });
 
 // Ruta para obtener el promedio de usuarios (GET '/promedio')
-router.get("/promedio", PromGet);
+router.get('/promedio', PromGet);
 // Ruta para crear un nuevo usuario (POST '/')
-router.post("/", enviosPost);
+router.post('/', enviosPost);
 // Ruta para actualizar un envío existente por su ID
-router.put("/:id_envio", enviosPut);
+router.put('/:id_envio', enviosPut);
 // Ruta para eliminar un usuario existente (DELETE '/')
 router.delete('/:id_envio', enviosDelete);
 // Exporta el router para q

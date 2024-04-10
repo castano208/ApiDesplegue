@@ -60,13 +60,13 @@ const enviosPut = async (req, res = response) => {
     try {
         const { id_envio } = req.params;
         const { tipoDeEnvio, detalleEnvio, fechaEnvio, estadoDelEnvio, dirreccionEnvio, totalEnvio } = req.body;
-
+        const _id = id_envio
         // Validación de datos de entrada
         if (!tipoDeEnvio || !detalleEnvio || !fechaEnvio || !estadoDelEnvio || !dirreccionEnvio || !totalEnvio ) {
             return res.status(400).json({ msg: 'Por favor, proporcione los datos completos' });
         }
 
-        const envio = await Envio.findOneAndUpdate({ id_envio }, { tipoDeEnvio, detalleEnvio, fechaEnvio, estadoDelEnvio, dirreccionEnvio, totalEnvio, estado }, { new: true });
+        const envio = await Envio.findOneAndUpdate({ _id }, { tipoDeEnvio, detalleEnvio, fechaEnvio, estadoDelEnvio, dirreccionEnvio, totalEnvio }, { new: true });
 
         if (!envio) {
             return res.status(404).json({ msg: 'Envio no encontrado' });
@@ -82,8 +82,9 @@ const enviosPut = async (req, res = response) => {
 const enviosDelete = async (req, res = response) => {
     try {
         const { id_envio } = req.params;
-        const envio = await Envio.findOneAndDelete({ id_envio });
-
+        const _id = id_envio
+        const envio = await Envio.findOneAndDelete({ _id });
+        
         if (!envio) {
             return res.status(404).json({ msg: 'Envio no encontrado' });
         }
