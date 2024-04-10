@@ -36,8 +36,8 @@ router.get("/promedio", PromGet);
 // Ruta para crear un nuevo usuario (POST '/')
 router.post("/", enviosPost);
 // Ruta para actualizar un envío existente por su ID
-router.put("/:_id", enviosPut);
+router.put("/:id_envio", enviosPut);
 // Ruta para eliminar un usuario existente (DELETE '/')
-router.delete('/:_id', enviosDelete);
+router.delete('/:id_envio', enviosDelete);
 // Exporta el router para q
 module.exports = router;

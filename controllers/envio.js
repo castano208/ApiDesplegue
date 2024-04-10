@@ -1,5 +1,4 @@
 const { response } = require("express"); // Importa la función `response` desde el módulo express
-const bcrypt = require("bcryptjs"); // Importa la librería bcryptjs para el cifrado de contraseñas
 // Importar modelos
 const Envio = require('../modules/envio'); // Importa el modelo de Usuario desde el módulo '../modules/usuario'
 
@@ -58,48 +57,41 @@ const enviosPost = async (req, res) => {
 };
 
 const enviosPut = async (req, res = response) => {
-    const { tipoDeEnvio, detalleEnvio, fechaEnvio, estadoDelEnvio, dirreccionEnvio, totalEnvio, estado } = req.body;
-
     try {
-        const envio = await Envio.findByIdAndUpdate(req.params._id, {
-            tipoDeEnvio,
-            detalleEnvio,
-            fechaEnvio,
-            estadoDelEnvio,
-            dirreccionEnvio,
-            totalEnvio,
-            estado
-        }, { new: true });
+        const { id_envio } = req.params;
+        const { tipoDeEnvio, detalleEnvio, fechaEnvio, estadoDelEnvio, dirreccionEnvio, totalEnvio } = req.body;
 
-        if (!envio) {
-            return res.status(404).json({ msg: "Envío no encontrado" });
+        // Validación de datos de entrada
+        if (!tipoDeEnvio || !detalleEnvio || !fechaEnvio || !estadoDelEnvio || !dirreccionEnvio || !totalEnvio ) {
+            return res.status(400).json({ msg: 'Por favor, proporcione los datos completos' });
         }
 
-        res.json({
-            msg: "Envío Modificado",
-            envio
-        });
+        const envio = await Envio.findOneAndUpdate({ id_envio }, { tipoDeEnvio, detalleEnvio, fechaEnvio, estadoDelEnvio, dirreccionEnvio, totalEnvio, estado }, { new: true });
+
+        if (!envio) {
+            return res.status(404).json({ msg: 'Envio no encontrado' });
+        }
+
+        res.json({ msg: 'Envio actualizado exitosamente', envio });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ msg: "Error al modificar el envío" });
+        res.status(500).json({ msg: 'Error en el servidor al actualizar envio' });
     }
 };
 
 const enviosDelete = async (req, res = response) => {
     try {
-        const envio = await Envio.findByIdAndDelete(req.params._id);
+        const { id_envio } = req.params;
+        const envio = await Envio.findOneAndDelete({ id_envio });
 
         if (!envio) {
-            return res.status(404).json({ msg: "Envío no encontrado" });
+            return res.status(404).json({ msg: 'Envio no encontrado' });
         }
 
-        res.json({
-            msg: "Envío Eliminado",
-            envio
-        });
+        res.json({ msg: 'Envio eliminado exitosamente', envio });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ msg: "Error al eliminar el envío" });
+        res.status(500).json({ msg: 'Error en el servidor al eliminar envio' });
     }
 };
 
